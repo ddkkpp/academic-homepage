@@ -247,19 +247,8 @@ a { color: inherit; }
 .simple-list li + li { margin-top: 6px; }
 .cv-card > p:not(.section-kicker) { color: var(--muted); font-size: .91rem; }
 .cv-card .button { margin-top: 4px; }
-.honors-section { padding-bottom: 18px; }
-.cv-section { padding-top: 18px; }
 .cv-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 8px 0 18px; }
 .cv-actions .button { margin-top: 0; }
-.cv-preview {
-  display: block;
-  width: 100%;
-  height: min(80vh, 900px);
-  min-height: 620px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #eef2f5;
-}
 .small-note { margin-bottom: 0; font-size: .76rem !important; }
 .contact-section { padding: 68px 0 72px; }
 .contact-section > p:not(.section-kicker) { max-width: 620px; color: var(--muted); }
@@ -278,7 +267,7 @@ code { padding: 2px 5px; border-radius: 4px; background: #eef2f5; font-size: .8e
   .hero { min-height: auto; flex-direction: column-reverse; align-items: stretch; padding: 54px 0; }
   .hero-mark { flex: 0 0 132px; width: 132px; height: 132px; align-self: center; }
   .about-grid, .interest-grid, .bottom-grid { grid-template-columns: 1fr; }
-  .cv-preview { height: 72vh; min-height: 520px; }
+
   .about-grid { gap: 25px; }
   .section { padding: 48px 0; }
   .publication { grid-template-columns: 48px minmax(0, 1fr); gap: 12px; }
