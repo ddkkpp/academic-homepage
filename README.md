@@ -1,65 +1,35 @@
 # Kunpeng Ding — Academic Homepage
 
-A lightweight, responsive, dependency-free academic homepage.
+A responsive, dependency-free academic homepage published through GitHub Pages.
 
-## Contents
+## Repository contents
 
-```text
-academic-homepage/
-├── README.md
-└── public/
-    ├── index.html
-    ├── style.css
-    ├── assets/
-    │   └── favicon.svg
-    └── papers/
-        └── ATC2026_RSM.pdf
-```
+- .github/workflows/deploy.yml: GitHub Pages deployment workflow.
+- public/index.html: page content and profile links.
+- public/style.css: responsive layout and styling.
+- public/assets/profile.jpg: supplied profile photo.
+- public/assets/favicon.svg: site favicon.
+- public/cv.pdf: supplied CV.
+- public/papers/ATC2026_RSM.pdf: ATC 2026 paper.
 
-## Deploy with Cloudflare Pages (Git integration)
+## Deploy
 
-1. Create a GitHub repository, for example `academic-homepage`, under the GitHub account you want to use (e.g. `kpding`).
-2. Upload the contents of this folder to the repository. Keep the `public/` directory at the repository root.
-3. In Cloudflare Dashboard, open **Workers & Pages → Create application → Pages → Connect to Git**.
-4. Select the repository and configure:
-   - Production branch: `main`
-   - Framework preset: `None`
-   - Build command: `exit 0`
-   - Build output directory: `public`
-5. Click **Save and Deploy**.
+The workflow deploys the public directory on pushes to main and supports manual runs. In repository Settings → Pages, select GitHub Actions as the build and deployment source.
 
-Cloudflare will publish the site at the project URL, typically `https://<project-name>.pages.dev`.
-Each push to the production branch triggers a new deployment.
+Published site: https://ddkkpp.github.io/academic-homepage/
 
-## Local preview
+## Preview
 
-You can open `public/index.html` directly in a browser. For a local HTTP server, run:
+Open public/index.html directly, or run this command from the repository root:
 
-```bash
-cd public
-python -m http.server 8000
-```
+    python -m http.server 8000 --directory public
 
-Then visit `http://localhost:8000`.
+Then visit http://localhost:8000.
 
-## Updating the CV
+## Profile links
 
-The CV section is intentionally a placeholder. When ready:
+- Google Scholar: https://scholar.google.com/citations?user=GgBCIJIAAAAJ&hl=en
+- Patent detail: https://patents.google.com/patent/CN116846603A/zh
+- HPR-DS, NetRT, SLP, and RPBV link to their DOI/publisher pages in public/index.html.
 
-1. Put your PDF at `public/cv.pdf`.
-2. In `public/index.html`, replace the disabled “CV PDF · Coming soon” span with:
-
-```html
-<a class="button button-light" href="./cv.pdf" target="_blank" rel="noopener">Download CV (PDF)</a>
-```
-
-## Publication links
-
-- ATC 2026: the uploaded PDF is included locally at `public/papers/ATC2026_RSM.pdf`.
-- HPR-DS, NetRT, SLP, and RPBV: linked to their DOI/publisher landing pages.
-- Patent: linked to the USTC official patent listing.
-
-## Notes
-
-- The GitHub profile link in the page currently points to `https://github.com/kpding`. Change it in `public/index.html` if you want to show a different GitHub profile.
-- The page lists five publications. MCM is shown separately as ongoing research, not as a published paper.
+The page lists five publications. MCM is shown separately as ongoing research.
