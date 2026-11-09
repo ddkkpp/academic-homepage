@@ -9,7 +9,7 @@ A responsive, dependency-free academic homepage published through GitHub Pages.
 - public/style.css: responsive layout and styling.
 - public/assets/profile.jpg: supplied profile photo.
 - public/assets/favicon.svg: site favicon.
-- public/cv.pdf: supplied CV.
+- public/cv.pdf: supplied CV with an inline homepage preview and download link.
 - public/papers/ATC2026_RSM.pdf: ATC 2026 paper.
 
 ## Deploy
@@ -29,7 +29,7 @@ Then visit http://localhost:8000.
 ## Profile links
 
 - Google Scholar: https://scholar.google.com/citations?user=GgBCIJIAAAAJ&hl=en
-- Patent detail: https://patents.google.com/patent/CN116846603A/zh
+- CNIPA patent search: https://pss-system.cponline.cnipa.gov.cn/conventionalSearch (search CN116846603A).
 - HPR-DS, NetRT, SLP, and RPBV link to their DOI/publisher pages in public/index.html.
 
 The page lists five publications. MCM is shown separately as ongoing research.
