@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Preview Kunpeng Ding's CV.">
+  <meta name="theme-color" content="#102d49">
+  <title>CV Preview | Kunpeng Ding</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #17344a;
+      background: #edf2f5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 280px; }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px max(18px, calc((100vw - 960px) / 2));
+      background: rgba(16, 45, 73, .97);
+      color: white;
+      box-shadow: 0 2px 12px rgba(10, 32, 49, .15);
+    }
+    .toolbar a { color: inherit; font-size: .9rem; font-weight: 700; text-decoration: none; }
+    .toolbar a:hover { text-decoration: underline; }
+    .home-link { display: flex; align-items: center; gap: 10px; }
+    .brand { font-size: 1.05rem !important; letter-spacing: .03em; }
+    .download-link {
+      padding: 9px 13px;
+      border: 1px solid rgba(255,255,255,.48);
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    main { width: min(960px, calc(100% - 32px)); margin: 32px auto 48px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); }
+    .intro { margin: 0 0 20px; color: #526575; line-height: 1.6; }
+    .intro a { color: #17648b; font-weight: 700; }
+    #status { padding: 24px; text-align: center; color: #526575; }
+    .pdf-pages { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .pdf-page {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      background: white;
+      border: 1px solid #d5e0e7;
+      border-radius: 4px;
+      box-shadow: 0 8px 28px rgba(20, 46, 64, .12);
+    }
+    @media (max-width: 600px) {
+      .toolbar { padding: 10px 12px; gap: 8px; }
+      .toolbar a { font-size: .82rem; }
+      main { width: calc(100% - 20px); margin-top: 22px; }
+      .pdf-pages { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="toolbar">
+    <a class="home-link" href="./index.html"><span class="brand">KD.</span><span>Back to homepage</span></a>
+    <a class="download-link" href="./cv.pdf" download>Download PDF</a>
+  </header>
+  <main>
+    <h1>Curriculum Vitae</h1>
+    <p class="intro">The CV is rendered on this page for preview. <a href="./cv.pdf" target="_blank" rel="noopener">Open the original PDF</a>.</p>
+    <p id="status" role="status" aria-live="polite">Loading CV preview…</p>
+    <div id="pdf-pages" class="pdf-pages"></div>
+  </main>
+  <noscript>
+    <p style="margin:24px;text-align:center">Enable JavaScript to view the preview, or <a href="./cv.pdf">download the PDF</a>.</p>
+  </noscript>
+  <script type="module">
+    const version = "6.5.438";
+    const cdn = "https://cdn.jsdelivr.net/npm/pdfjs-dist@" + version + "/build/";
+    const status = document.getElementById("status");
+    const pages = document.getElementById("pdf-pages");
+
+    try {
+      const pdfjsLib = await import(cdn + "pdf.mjs");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = cdn + "pdf.worker.mjs";
+
+      const pdf = await pdfjsLib.getDocument("./cv.pdf").promise;
+      for (let number = 1; number <= pdf.numPages; number += 1) {
+        status.textContent = "Rendering page " + number + " of " + pdf.numPages + "…";
+        const page = await pdf.getPage(number);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const availableWidth = Math.max(280, pages.clientWidth);
+        const scale = Math.min(availableWidth / baseViewport.width, 1.7);
+        const viewport = page.getViewport({ scale });
+        const outputScale = Math.min(window.devicePixelRatio || 1, 2);
+        const canvas = document.createElement("canvas");
+        canvas.className = "pdf-page";
+        canvas.setAttribute("aria-label", "CV page " + number);
+        const context = canvas.getContext("2d", { alpha: false });
+        canvas.width = Math.floor(viewport.width * outputScale);
+        canvas.height = Math.floor(viewport.height * outputScale);
+        canvas.style.width = Math.floor(viewport.width) + "px";
+        const transform = outputScale === 1 ? null : [outputScale, 0, 0, outputScale, 0, 0];
+        pages.appendChild(canvas);
+        await page.render({ canvasContext: context, viewport, transform }).promise;
+      }
+      status.hidden = true;
+    } catch (error) {
+      console.error("CV preview failed to load.", error);
+      status.textContent = "The preview could not load. You can still download the PDF using the button above.";
+    }
+  </script>
+</body>
+</html>
