@@ -9,8 +9,8 @@ A responsive, dependency-free academic homepage published through GitHub Pages.
 - public/style.css: responsive layout and styling.
 - public/assets/profile.jpg: supplied profile photo.
 - public/assets/favicon.svg: site favicon.
-- public/cv-preview.html: responsive PDF.js viewer for desktop and mobile.
-- public/vendor/pdfjs/: self-hosted PDF.js 6.5.438 module and worker, with its Apache-2.0 license.
+- public/cv-preview.html: lightweight image-based CV preview for phones and desktops.
+- public/assets/cv-page.webp: compressed preview image rendered from the one-page CV.
 - public/cv.pdf: supplied CV source PDF with a separate download link.
 - public/papers/ATC2026_RSM.pdf: ATC 2026 paper.
 

@@ -38,26 +38,27 @@
       border-radius: 8px;
       white-space: nowrap;
     }
-    main { width: min(960px, calc(100% - 32px)); margin: 32px auto 48px; }
+    main { width: min(960px, calc(100% - 32px)); margin: 28px auto 44px; }
     h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); }
-    .intro { margin: 0 0 20px; color: #526575; line-height: 1.6; }
-    .intro a { color: #17648b; font-weight: 700; }
-    #status { padding: 24px; text-align: center; color: #526575; }
-    .pdf-pages { display: flex; flex-direction: column; align-items: center; gap: 18px; }
-    .pdf-page {
+    .intro { margin: 0 0 18px; color: #526575; line-height: 1.6; }
+    .cv-page { margin: 0; text-align: center; }
+    .cv-page img {
       display: block;
-      max-width: 100%;
+      width: 100%;
+      max-width: 900px;
       height: auto;
-      background: white;
+      margin: 0 auto;
       border: 1px solid #d5e0e7;
       border-radius: 4px;
+      background: white;
       box-shadow: 0 8px 28px rgba(20, 46, 64, .12);
     }
+    .original-link { margin: 16px 0 0; color: #526575; text-align: center; font-size: .9rem; }
+    .original-link a { color: #17648b; font-weight: 700; }
     @media (max-width: 600px) {
       .toolbar { padding: 10px 12px; gap: 8px; }
       .toolbar a { font-size: .82rem; }
-      main { width: calc(100% - 20px); margin-top: 22px; }
-      .pdf-pages { gap: 12px; }
+      main { width: calc(100% - 20px); margin-top: 20px; }
     }
   </style>
 </head>
@@ -68,48 +69,11 @@
   </header>
   <main>
     <h1>Curriculum Vitae</h1>
-    <p class="intro">The CV is rendered locally on this page for preview. <a href="./cv.pdf" target="_blank" rel="noopener">Open the original PDF</a>.</p>
-    <p id="status" role="status" aria-live="polite">Loading CV preview…</p>
-    <div id="pdf-pages" class="pdf-pages"></div>
+    <p class="intro">Preview the CV below, or download the original PDF.</p>
+    <figure class="cv-page">
+      <img src="./assets/cv-page.webp" width="1489" height="2105" alt="One-page CV preview" fetchpriority="high" decoding="async">
+    </figure>
+    <p class="original-link">Need the original document? <a href="./cv.pdf" target="_blank" rel="noopener">Open the PDF</a>.</p>
   </main>
-  <noscript>
-    <p style="margin:24px;text-align:center">Enable JavaScript to view the preview, or <a href="./cv.pdf">download the PDF</a>.</p>
-  </noscript>
-  <script type="module">
-    const status = document.getElementById("status");
-    const pages = document.getElementById("pdf-pages");
-
-    try {
-      const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
-      const pdfjsBase = new URL("./vendor/pdfjs/", window.location.href);
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("pdf.worker.min.mjs", pdfjsBase).href;
-
-      const pdfUrl = new URL("./cv.pdf", window.location.href).href;
-      const pdf = await pdfjsLib.getDocument({ url: pdfUrl }).promise;
-      for (let number = 1; number <= pdf.numPages; number += 1) {
-        status.textContent = "Rendering page " + number + " of " + pdf.numPages + "…";
-        const page = await pdf.getPage(number);
-        const baseViewport = page.getViewport({ scale: 1 });
-        const availableWidth = Math.max(280, pages.clientWidth);
-        const scale = Math.min(availableWidth / baseViewport.width, 1.7);
-        const viewport = page.getViewport({ scale });
-        const outputScale = Math.min(window.devicePixelRatio || 1, 2);
-        const canvas = document.createElement("canvas");
-        canvas.className = "pdf-page";
-        canvas.setAttribute("aria-label", "CV page " + number);
-        const context = canvas.getContext("2d", { alpha: false });
-        canvas.width = Math.floor(viewport.width * outputScale);
-        canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = Math.floor(viewport.width) + "px";
-        const transform = outputScale === 1 ? null : [outputScale, 0, 0, outputScale, 0, 0];
-        pages.appendChild(canvas);
-        await page.render({ canvasContext: context, viewport, transform }).promise;
-      }
-      status.hidden = true;
-    } catch (error) {
-      console.error("CV preview failed to load.", error);
-      status.textContent = "Preview failed: " + (error && error.message ? error.message : String(error)) + ". You can still download the PDF using the button above.";
-    }
-  </script>
 </body>
 </html>
