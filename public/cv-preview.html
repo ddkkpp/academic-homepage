@@ -81,9 +81,11 @@
 
     try {
       const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "./vendor/pdfjs/pdf.worker.min.mjs";
+      const pdfjsBase = new URL("./vendor/pdfjs/", window.location.href);
+      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("pdf.worker.min.mjs", pdfjsBase).href;
 
-      const pdf = await pdfjsLib.getDocument("./cv.pdf").promise;
+      const pdfUrl = new URL("./cv.pdf", window.location.href).href;
+      const pdf = await pdfjsLib.getDocument({ url: pdfUrl }).promise;
       for (let number = 1; number <= pdf.numPages; number += 1) {
         status.textContent = "Rendering page " + number + " of " + pdf.numPages + "…";
         const page = await pdf.getPage(number);
